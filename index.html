@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tarzo Platform - Login & Performance Dashboard</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts for premium UI look -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    
+    /* 3D Glassmorphism & Shadow Effects */
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    
+    /* Smooth animations for state changes */
+    .transition-all-300 {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    /* Custom scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* Floating Animation for Spheres in 3D scene */
+    @keyframes float-slow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(3deg); }
+    }
+    @keyframes float-medium {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-8px) scale(1.02); }
+    }
+    .animate-float-1 {
+      animation: float-slow 6s ease-in-out infinite;
+    }
+    .animate-float-2 {
+      animation: float-medium 5s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white overflow-x-hidden">
+
+  <!-- Toast Notifications Container -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+  <!-- MAIN APP CONTAINER -->
+  <main id="app-root" class="flex-grow flex flex-col min-h-screen">
+    
+    <!-- ============================================== -->
+    <!-- SECTION 1: LOGIN PAGE (Matches Uploaded Design)-->
+    <!-- ============================================== -->
+    <section id="login-view" class="flex-grow grid grid-cols-1 lg:grid-cols-12 min-h-screen">
+      
+      <!-- LEFT HAND COLUMN: Recreated 3D Studio Background -->
+      <div class="lg:col-span-7 bg-[#0c1d3a] relative overflow-hidden flex flex-col justify-end p-8 lg:p-16 min-h-[40vh] lg:min-h-screen">
+        <!-- Ambient Wall Gradient Layer -->
+        <div class="absolute inset-0 bg-gradient-to-br from-[#0a1526] via-[#0c1d3a] to-[#162e58] opacity-95"></div>
+        
+        <!-- Floor Split Line (Matches the dark blue wall & yellow floor layout) -->
+        <div class="absolute bottom-0 left-0 right-0 h-[40%] bg-gradient-to-r from-[#edd37b] via-[#f5de8b] to-[#e4cb72] shadow-inner"></div>
+        
+        <!-- 3D Pedestals & Shapes container with Perspective -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div class="relative w-full h-full max-w-lg max-h-[500px] mt-12">
+            
+            <!-- BACK CYLINDER PEDESTAL (Right) -->
+            <div class="absolute bottom-[28%] right-[10%] w-[120px] h-[160px] transform rotate-[-2deg] opacity-90">
+              <!-- Side cylindrical body -->
+              <div class="absolute bottom-0 left-0 right-0 h-[140px] bg-gradient-to-r from-[#d9be62] via-[#ead07d] to-[#cfb456] rounded-b-lg shadow-xl"></div>
+              <!-- Top surface of cylinder -->
+              <div class="absolute top-[10px] left-0 right-0 h-[25px] bg-[#f9e7a8] rounded-full border border-yellow-200/50"></div>
+            </div>
+
+            <!-- MAIN CENTRAL CYLINDER PEDESTAL (Middle) -->
+            <div class="absolute bottom-[22%] left-[28%] w-[240px] h-[260px] z-10">
+              <!-- Side cylindrical body with soft shadows and realistic lighting -->
+              <div class="absolute bottom-0 left-0 right-0 h-[220px] bg-gradient-to-r from-[#dfc56a] via-[#f7df8b] to-[#d6bb5e] rounded-b-xl shadow-[0_20px_40px_rgba(0,0,0,0.35)]"></div>
+              <!-- Top surface -->
+              <div class="absolute top-[20px] left-0 right-0 h-[45px] bg-gradient-to-b from-[#fdf6d4] to-[#fcf0bf] rounded-full border border-yellow-100/30"></div>
+            </div>
+
+            <!-- FLAT PLATFORM / FOREGROUND PEDESTAL -->
+            <div class="absolute bottom-[10%] left-[12%] w-[380px] h-[90px] z-20">
+              <!-- Bottom edge depth -->
+              <div class="absolute bottom-0 left-0 right-0 h-[65px] bg-gradient-to-r from-[#cfb24c] via-[#e2c765] to-[#c2a63d] rounded-b-3xl shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)]"></div>
+              <!-- Flat upper surface -->
+              <div class="absolute top-0 left-0 right-0 h-[60px] bg-gradient-to-b from-[#faf4cb] to-[#ebd074] rounded-full border border-yellow-100/40"></div>
+              <!-- Lower platform step depth -->
+              <div class="absolute top-[20px] left-[5%] right-[5%] h-[55px] bg-gradient-to-b from-[#edd37b] to-[#dcbf58] rounded-full -z-10 shadow-lg"></div>
+            </div>
+
+            <!-- METALLIC SPHERES -->
+            <!-- Large Shiny Metallic Blue Sphere (Floating Left) -->
+            <div class="absolute bottom-[35%] left-[5%] w-[80px] h-[80px] rounded-full z-20 animate-float-1 shadow-[0_15px_30px_rgba(0,0,0,0.4)]"
+                 style="background: radial-gradient(circle at 35% 35%, #8baefe 0%, #3069ef 35%, #0d2c79 75%, #040e2d 100%);">
+              <!-- Specular reflection dot -->
+              <div class="absolute top-[20%] left-[20%] w-3 h-2 bg-white/70 rounded-full blur-[0.5px] transform rotate-[-30deg]"></div>
+            </div>
+
+            <!-- Small Gold Sphere (Bottom-Left Foreground) -->
+            <div class="absolute bottom-[6%] left-[-2%] w-[45px] h-[45px] rounded-full z-30 animate-float-2 shadow-[0_10px_20px_rgba(0,0,0,0.4)]"
+                 style="background: radial-gradient(circle at 35% 35%, #ffffff 0%, #fae29c 30%, #d59f20 70%, #684902 100%);">
+              <!-- Specular reflection dot -->
+              <div class="absolute top-[20%] left-[20%] w-2 h-1.5 bg-white/80 rounded-full blur-[0.5px]"></div>
+            </div>
+            
+          </div>
+        </div>
+        
+        <!-- Elegant subtle branding/artwork watermark on left corner -->
+        <div class="relative z-30 text-white/40 text-sm flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          Tarzo Platform Environment Active
+        </div>
+      </div>
+
+      <!-- RIGHT HAND COLUMN: Clean Login UI (Matches Image Layout Exactly) -->
+      <div class="lg:col-span-5 bg-white flex flex-col justify-between p-8 sm:p-12 lg:p-20 relative">
+        <!-- Top spacer for layout balance on desktop -->
+        <div class="hidden lg:block"></div>
+        
+        <!-- Main Form Container -->
+        <div class="max-w-md w-full mx-auto my-auto py-10">
+          
+          <!-- Tarzo Logo -->
+          <div class="flex justify-center lg:justify-start mb-8">
+            <div class="bg-[#111317] text-white p-3 rounded-2xl inline-flex items-center justify-center shadow-lg transition-transform hover:scale-105 duration-300">
+              <!-- Recreated precise Tarzo T-Box Icon -->
+              <svg class="w-8 h-8" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="4" y="4" width="32" height="32" rx="8" fill="currentColor" />
+                <path d="M14 13H26V17H22V27H18V17H14V13Z" fill="#FFFFFF" />
+                <path d="M25.5 22.5L28.5 25.5L25.5 28.5V22.5Z" fill="#F39C12" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Headline Headers -->
+          <div class="text-center lg:text-left mb-8">
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-[#111317] tracking-tight mb-2">
+              Welcome to Tarzo Platform
+            </h1>
+            <p class="text-slate-500 font-medium text-sm sm:text-base">
+              Please enter your login details below
+            </p>
+          </div>
+
+          <!-- Interactive Error Alert Box (Hidden by default) -->
+          <div id="login-error-alert" class="hidden mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-xl text-red-700 text-sm transition-all duration-300">
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+              </svg>
+              <div>
+                <span class="font-bold">Incorrect credentials.</span><br>
+                Try: <code class="bg-red-100 px-1 py-0.5 rounded font-mono text-xs text-red-800">hello.ozihuddin@gmail.com</code> / <code class="bg-red-100 px-1 py-0.5 rounded font-mono text-xs text-red-800">ozihuddin123</code>
+              </div>
+            </div>
+          </div>
+
+          <!-- Credentials Helper Card (Helpful for reviewers) -->
+          <div class="mb-6 p-3.5 bg-slate-50 rounded-2xl border border-slate-200/60 text-xs text-slate-600 flex flex-col gap-1">
+            <div class="font-semibold text-slate-800 flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Quick Test Credentials:
+            </div>
+            <div><span class="font-medium text-slate-500">Email:</span> <button onclick="fillTestCredentials()" class="underline font-mono text-indigo-600 hover:text-indigo-800">hello.ozihuddin@gmail.com</button></div>
+            <div><span class="font-medium text-slate-500">Password:</span> <button onclick="fillTestCredentials()" class="underline font-mono text-indigo-600 hover:text-indigo-800">ozihuddin123</button></div>
+          </div>
+
+          <!-- Form Element -->
+          <form id="login-form" onsubmit="handleLoginSubmit(event)" class="space-y-5">
+            <!-- Email Input -->
+            <div>
+              <label for="email" class="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-2">
+                Email *
+              </label>
+              <div class="relative rounded-xl shadow-sm">
+                <input 
+                  type="email" 
+                  id="email" 
+                  required
+                  placeholder="Enter your email"
+                  class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all placeholder:text-slate-400 text-slate-900 text-sm"
+                  value=""
+                >
+              </div>
+            </div>
+
+            <!-- Password Input -->
+            <div>
+              <div class="flex justify-between items-center mb-2">
+                <label for="password" class="block text-xs font-semibold uppercase tracking-wider text-slate-700">
+                  Password *
+                </label>
+              </div>
+              <div class="relative rounded-xl shadow-sm">
+                <input 
+                  type="password" 
+                  id="password" 
+                  required
+                  placeholder="Enter your password"
+                  class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all placeholder:text-slate-400 text-slate-900 text-sm pr-12"
+                  value=""
+                >
+                <!-- Toggle Password visibility icon -->
+                <button 
+                  type="button" 
+                  onclick="togglePasswordVisibility()" 
+                  class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+                >
+                  <svg id="password-toggle-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <!-- Eye icon open -->
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Remember Me & Forgot Password wrapper -->
+            <div class="flex items-center justify-between text-sm py-1">
+              <label class="flex items-center gap-2 cursor-pointer select-none">
+                <input 
+                  type="checkbox" 
+                  id="remember-me"
+                  class="w-4.5 h-4.5 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500 focus:ring-offset-0 focus:outline-none"
+                >
+                <span class="text-slate-600 text-xs sm:text-sm font-medium">Remember me</span>
+              </label>
+              <a href="#" onclick="showFeatureNotice('Reset Password')" class="text-xs sm:text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition-colors">
+                Forgot your password?
+              </a>
+            </div>
+
+            <!-- Submit Button (With realistic loading state) -->
+            <button 
+              type="submit" 
+              id="login-btn"
+              class="w-full bg-[#111317] text-white font-semibold py-3.5 px-6 rounded-xl transition-all-300 hover:bg-slate-800 active:scale-[0.99] flex items-center justify-center gap-2 shadow-lg shadow-slate-950/20 mt-4"
+            >
+              <span id="login-btn-text">Login</span>
+              <svg id="login-spinner" class="hidden animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            </button>
+          </form>
+
+        </div>
+
+        <!-- Footer branding & Policies -->
+        <div class="text-center text-[10px] sm:text-xs text-slate-400 font-medium tracking-wide mt-8">
+          <div class="flex justify-center gap-3 mb-1.5">
+            <a href="#" onclick="showFeatureNotice('Privacy Policy')" class="hover:text-slate-600 transition-colors underline decoration-dotted">Tarzo Privacy Policy</a>
+            <span>&amp;</span>
+            <a href="#" onclick="showFeatureNotice('Terms of Service')" class="hover:text-slate-600 transition-colors underline decoration-dotted">Terms Of Service</a>
+          </div>
+          <div>© Copyright Tarzo Media LTD - 2026</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SECTION 2: INTERACTIVE DASHBOARD                -->
+    <!-- ============================================== -->
+    <section id="dashboard-view" class="hidden flex-grow flex flex-col lg:flex-row min-h-screen bg-slate-950 text-slate-100">
+      
+      <!-- DASHBOARD SIDEBAR MENU (Side menu) -->
+      <aside class="w-full lg:w-72 bg-slate-900 border-b lg:border-b-0 lg:border-r border-slate-800 flex flex-col shrink-0">
+        <!-- Sidebar Brand Header -->
+        <div class="p-6 border-b border-slate-800 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="bg-indigo-600 text-white p-2.5 rounded-xl flex items-center justify-center">
+              <svg class="w-6 h-6" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="4" y="4" width="32" height="32" rx="8" fill="currentColor" />
+                <path d="M14 13H26V17H22V27H18V17H14V13Z" fill="#FFFFFF" />
+              </svg>
+            </div>
+            <div>
+              <span class="font-extrabold text-lg tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-indigo-200">
+                TARZO
+              </span>
+              <p class="text-[10px] uppercase tracking-widest text-indigo-400 font-bold">Workspace</p>
+            </div>
+          </div>
+          
+          <!-- Mobile Menu Toggle Button (Visible only on mobile) -->
+          <button onclick="toggleMobileMenu()" class="lg:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Navigation Menu Links -->
+        <nav id="sidebar-nav" class="hidden lg:flex flex-col flex-grow p-4 gap-1.5 overflow-y-auto">
+          <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-3 mb-2">Main Controls</div>
+          
+          <button onclick="switchTab('dashboard')" class="tab-link active w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all text-indigo-400 bg-indigo-500/10 border-l-2 border-indigo-500">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z" />
+            </svg>
+            Performance Overview
+          </button>
+
+          <button onclick="switchTab('campaigns')" class="tab-link w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-slate-800/60">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+            </svg>
+            Campaign Analytics
+          </button>
+
+          <button onclick="switchTab('optimizer')" class="tab-link w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-slate-800/60">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            Autopilot Rules
+          </button>
+
+          <button onclick="switchTab('settings')" class="tab-link w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-all text-slate-400 hover:text-white hover:bg-slate-800/60">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            Workspace Settings
+          </button>
+
+          <!-- Divider -->
+          <div class="h-px bg-slate-800 my-4"></div>
+
+          <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-3 mb-2">Campaign Filters</div>
+          <!-- Quick Filters inside Side Menu -->
+          <div class="flex flex-col gap-1 px-1">
+            <button onclick="setCampaignFilter('all')" id="filter-btn-all" class="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-white">
+              <span>All Active</span>
+              <span id="badge-count-all" class="bg-slate-700 text-slate-300 px-2 py-0.5 rounded-full text-[10px]">0</span>
+            </button>
+            <button onclick="setCampaignFilter('winning')" id="filter-btn-winning" class="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold text-emerald-400 hover:bg-slate-800/40">
+              <span class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                Winning
+              </span>
+              <span id="badge-count-winning" class="bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full text-[10px]">0</span>
+            </button>
+            <button onclick="setCampaignFilter('losing')" id="filter-btn-losing" class="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold text-rose-400 hover:bg-slate-800/40">
+              <span class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                Losing
+              </span>
+              <span id="badge-count-losing" class="bg-rose-500/10 text-rose-400 px-2 py-0.5 rounded-full text-[10px]">0</span>
+            </button>
+          </div>
+
+          <!-- Logged-in User Profile Widget in Sidebar footer -->
+          <div class="mt-auto pt-6 border-t border-slate-800 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-indigo-600 border-2 border-slate-700 flex items-center justify-center font-bold text-white shadow-md">
+              OZ
+            </div>
+            <div class="flex-grow min-w-0">
+              <div class="text-sm font-bold text-white truncate">Ozihuddin</div>
+              <div class="text-xs text-indigo-400 truncate">hello.ozihuddin@gmail.com</div>
+            </div>
+            <button onclick="handleLogout()" title="Log Out" class="p-2 text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 rounded-lg transition-all">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+            </button>
+          </div>
+        </nav>
+      </aside>
+
+      <!-- DASHBOARD MAIN WORKSPACE AREA -->
+      <div class="flex-grow flex flex-col min-w-0 overflow-y-auto">
+        
+        <!-- Header Controls -->
+        <header class="p-6 bg-slate-900 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 class="text-2xl font-extrabold tracking-tight text-white" id="dashboard-title-text">Platform Overview</h2>
+              <span class="bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shadow-sm">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                Sync Live
+              </span>
+            </div>
+            <p class="text-slate-400 text-sm mt-0.5">Real-time optimization matrix for marketing campaigns</p>
+          </div>
+          
+          <!-- CTA Action Row -->
+          <div class="flex items-center gap-3 self-end sm:self-auto">
+            <button 
+              onclick="openAddCampaignModal()"
+              class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 shadow-lg shadow-indigo-500/10 active:scale-95"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+              </svg>
+              Create Campaign
+            </button>
+          </div>
+        </header>
+
+        <!-- Dynamic Workspace Content Screens -->
+        <div class="p-6 space-y-8 flex-grow">
+
+          <!-- TAB 1: DASHBOARD VIEW (Overview Dashboard with Metrics) -->
+          <div id="tab-dashboard" class="space-y-8 transition-all duration-300">
+            
+            <!-- CORE METRICS CARDS: Cost, Profit, ROI -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              
+              <!-- CARD 1: Cost -->
+              <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl relative overflow-hidden group hover:border-indigo-500/30 transition-all duration-300 shadow-md">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-600/5 rounded-full blur-2xl group-hover:bg-indigo-600/10 transition-all"></div>
+                <div class="flex items-center justify-between mb-4">
+                  <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Total Campaign Cost</span>
+                  <div class="bg-slate-800 text-slate-300 p-2.5 rounded-xl">
+                    <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                </div>
+                <div class="flex items-baseline gap-2">
+                  <span id="metric-cost" class="text-3xl font-extrabold text-white">$0.00</span>
+                  <span class="text-rose-400 text-xs font-semibold flex items-center gap-0.5">
+                    +4.8%
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+                  </span>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-2 font-medium">Accumulated budget spent across active channels</p>
+              </div>
+
+              <!-- CARD 2: Profit -->
+              <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl relative overflow-hidden group hover:border-emerald-500/30 transition-all duration-300 shadow-md">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-600/5 rounded-full blur-2xl group-hover:bg-emerald-600/10 transition-all"></div>
+                <div class="flex items-center justify-between mb-4">
+                  <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Net Campaign Profit</span>
+                  <div class="bg-slate-800 text-slate-300 p-2.5 rounded-xl">
+                    <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                  </div>
+                </div>
+                <div class="flex items-baseline gap-2">
+                  <span id="metric-profit" class="text-3xl font-extrabold text-emerald-400">$0.00</span>
+                  <span class="text-emerald-400 text-xs font-semibold flex items-center gap-0.5">
+                    +18.2%
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+                  </span>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-2 font-medium">Net revenue minus cost margins from trackable goals</p>
+              </div>
+
+              <!-- CARD 3: ROI -->
+              <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl relative overflow-hidden group hover:border-indigo-400/30 transition-all duration-300 shadow-md">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-2xl group-hover:bg-indigo-500/10 transition-all"></div>
+                <div class="flex items-center justify-between mb-4">
+                  <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Return on Investment (ROI)</span>
+                  <div class="bg-slate-800 text-slate-300 p-2.5 rounded-xl">
+                    <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                  </div>
+                </div>
+                <div class="flex items-baseline gap-2">
+                  <span id="metric-roi" class="text-3xl font-extrabold text-white">0.0%</span>
+                  <span class="text-indigo-400 text-xs font-semibold flex items-center gap-0.5">
+                    +2.1%
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+                  </span>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-2 font-medium">Efficiency ratio calculated as (Net Profit / Cost) * 100</p>
+              </div>
+              
+            </div>
+
+            <!-- ANALYTICS MINI CHARTS ROW -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <!-- Traffic Allocation Line -->
+              <div class="lg:col-span-2 bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+                <div class="flex items-center justify-between mb-4">
+                  <div>
+                    <h4 class="font-bold text-white text-sm">Performance Growth Trend</h4>
+                    <p class="text-xs text-slate-400">Total conversion path velocity</p>
+                  </div>
+                  <span class="text-xs bg-indigo-500/10 text-indigo-400 px-2.5 py-1 rounded-lg font-bold">Hourly Sync</span>
+                </div>
+                <!-- Mini inline responsive chart SVG -->
+                <div class="w-full h-44">
+                  <svg class="w-full h-full" viewBox="0 0 500 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="chart-grad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#6366f1" stop-opacity="0.3"></stop>
+                        <stop offset="100%" stop-color="#6366f1" stop-opacity="0.0"></stop>
+                      </linearGradient>
+                    </defs>
+                    <path d="M0,120 Q50,70 100,90 T200,40 T300,70 T400,20 T500,50" stroke="#6366f1" stroke-width="3" stroke-linecap="round" fill="none"></path>
+                    <path d="M0,120 Q50,70 100,90 T200,40 T300,70 T400,20 T500,50 L500,150 L0,150 Z" fill="url(#chart-grad)"></path>
+                    <g stroke="#ffffff" stroke-opacity="0.1" stroke-width="1" stroke-dasharray="4">
+                      <line x1="0" y1="40" x2="500" y2="40"></line>
+                      <line x1="0" y1="80" x2="500" y2="80"></line>
+                      <line x1="0" y1="120" x2="500" y2="120"></line>
+                    </g>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Channel Allocation Donut Representation -->
+              <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between">
+                <div>
+                  <h4 class="font-bold text-white text-sm mb-1">Ad Network Split</h4>
+                  <p class="text-xs text-slate-400 mb-4">Share of total active investment</p>
+                </div>
+                <div class="flex items-center justify-around gap-2">
+                  <!-- Doughnut SVG Chart -->
+                  <div class="relative w-28 h-28 flex-shrink-0">
+                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                      <path class="text-slate-800" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+                      <!-- Google Ads Segment 45% -->
+                      <path class="text-indigo-500" stroke-dasharray="45, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+                      <!-- Facebook segment 35% (offset by 45) -->
+                      <path class="text-emerald-400" stroke-dasharray="35, 100" stroke-dashoffset="-45" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+                      <!-- Rest segment 20% -->
+                      <path class="text-amber-400" stroke-dasharray="20, 100" stroke-dashoffset="-80" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+                    </svg>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                      <span class="text-xs font-extrabold text-white">Active</span>
+                      <span class="text-[9px] text-slate-400">Budget</span>
+                    </div>
+                  </div>
+                  
+                  <div class="space-y-1.5 text-xs">
+                    <div class="flex items-center gap-1.5 text-slate-300">
+                      <span class="w-2.5 h-2.5 rounded bg-indigo-500 block"></span>
+                      <span>Google Ads</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-slate-300">
+                      <span class="w-2.5 h-2.5 rounded bg-emerald-400 block"></span>
+                      <span>Facebook</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-slate-300">
+                      <span class="w-2.5 h-2.5 rounded bg-amber-400 block"></span>
+                      <span>Other Ads</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SEARCH & SUB-FILTER BAR -->
+            <div class="bg-slate-900 p-4 rounded-xl border border-slate-800 flex flex-col md:flex-row gap-4 items-center justify-between">
+              <!-- Search Box -->
+              <div class="relative w-full md:w-96">
+                <input 
+                  type="text" 
+                  id="campaign-search" 
+                  oninput="handleSearch(this.value)"
+                  placeholder="Search campaigns by platform or name..."
+                  class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 pl-10 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                  <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Quick Filter Toggles -->
+              <div class="flex items-center gap-1.5 self-start md:self-auto bg-slate-950 p-1.5 rounded-xl border border-slate-800">
+                <button onclick="setCampaignFilter('all')" id="filter-all" class="campaign-filter-tab px-4 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white transition-all">
+                  All
+                </button>
+                <button onclick="setCampaignFilter('winning')" id="filter-winning" class="campaign-filter-tab px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all">
+                  Winning Only
+                </button>
+                <button onclick="setCampaignFilter('losing')" id="filter-losing" class="campaign-filter-tab px-4 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all">
+                  Losing Only
+                </button>
+              </div>
+            </div>
+
+            <!-- TWO COLUMN CAMPAIGNS BREAKDOWN (WINNING VS LOSING) -->
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+              
+              <!-- COLUMN A: WINNING CAMPAIGNS PANEL -->
+              <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col min-h-[400px]">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
+                  <div class="flex items-center gap-2.5">
+                    <span class="flex h-3 w-3 relative">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                    </span>
+                    <div>
+                      <h3 class="font-bold text-white text-base">Winning Campaigns</h3>
+                      <p class="text-[11px] text-emerald-400 font-semibold tracking-wide uppercase">Highly profitable ROI channels</p>
+                    </div>
+                  </div>
+                  <span id="winning-badge-total" class="bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full text-xs font-bold border border-emerald-500/20">0 Active</span>
+                </div>
+
+                <!-- Winning List Container -->
+                <div id="winning-list" class="space-y-4 flex-grow overflow-y-auto max-h-[500px] pr-2">
+                  <!-- Dynamic content loads here -->
+                </div>
+              </div>
+
+              <!-- COLUMN B: LOSING CAMPAIGNS PANEL -->
+              <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col min-h-[400px]">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-6">
+                  <div class="flex items-center gap-2.5">
+                    <span class="flex h-3 w-3 relative">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-3 w-3 bg-rose-500"></span>
+                    </span>
+                    <div>
+                      <h3 class="font-bold text-white text-base">Losing Campaigns</h3>
+                      <p class="text-[11px] text-rose-400 font-semibold tracking-wide uppercase">Underperforming / Optimization Required</p>
+                    </div>
+                  </div>
+                  <span id="losing-badge-total" class="bg-rose-500/10 text-rose-400 px-3 py-1 rounded-full text-xs font-bold border border-rose-500/20">0 Active</span>
+                </div>
+
+                <!-- Losing List Container -->
+                <div id="losing-list" class="space-y-4 flex-grow overflow-y-auto max-h-[500px] pr-2">
+                  <!-- Dynamic content loads here -->
+                </div>
+              </div>
+
+            </div>
+
+            <!-- GENERAL CAMPAIGN SUMMARY MATRIX TABLE -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+              <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 pb-4 border-b border-slate-800">
+                <div>
+                  <h3 class="font-bold text-white text-lg">Performance Matrix</h3>
+                  <p class="text-xs text-slate-400">Granular view of cost, profit, and return ratios</p>
+                </div>
+                
+                <!-- Reset Mock Button for demo testing -->
+                <button onclick="resetDefaultMockData()" class="text-xs text-indigo-400 hover:text-white bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-xl font-semibold transition-all flex items-center gap-1.5 border border-slate-700">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.27 15" /></svg>
+                  Reset Defaults
+                </button>
+              </div>
+
+              <!-- Scrollable Responsive Table Wrapper -->
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                  <thead>
+                    <tr class="border-b border-slate-800 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                      <th class="py-3 px-4">Campaign Name</th>
+                      <th class="py-3 px-4">Channel</th>
+                      <th class="py-3 px-4">Status</th>
+                      <th class="py-3 px-4 text-right">Cost</th>
+                      <th class="py-3 px-4 text-right">Net Profit</th>
+                      <th class="py-3 px-4 text-right">ROI (%)</th>
+                      <th class="py-3 px-4 text-center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="campaign-table-body" class="divide-y divide-slate-800/40 text-sm">
+                    <!-- Loaded dynamically via JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+              
+              <!-- Empty state screen when filter doesn't match -->
+              <div id="table-empty-state" class="hidden text-center py-12">
+                <svg class="w-12 h-12 text-slate-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h4 class="text-white font-bold text-base">No Campaigns Found</h4>
+                <p class="text-slate-400 text-xs mt-1">Adjust your search keyword or filters to view results.</p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- TAB 2: ANALYTICS PREVIEW PLACEHOLDER -->
+          <div id="tab-campaigns" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center space-y-4">
+            <div class="bg-indigo-600/10 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto text-indigo-400">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-white">Advanced Campaign Analytics</h3>
+            <p class="text-slate-400 max-w-md mx-auto text-sm">Detailed telemetry tracking, click logs, UTM tag parser matrices, and multivariate audience breakdown analytics are loading...</p>
+            <button onclick="switchTab('dashboard')" class="bg-indigo-600 text-white font-semibold text-sm px-5 py-2.5 rounded-xl">
+              Back to Overview
+            </button>
+          </div>
+
+          <!-- TAB 3: RULES PREVIEW PLACEHOLDER -->
+          <div id="tab-optimizer" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center space-y-4">
+            <div class="bg-amber-500/10 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto text-amber-400">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-white">Autopilot Optimizer Engines</h3>
+            <p class="text-slate-400 max-w-md mx-auto text-sm">Create and automate smart rules to pause losing campaigns when ROI drops below a custom target threshold.</p>
+            <button onclick="switchTab('dashboard')" class="bg-indigo-600 text-white font-semibold text-sm px-5 py-2.5 rounded-xl">
+              Back to Overview
+            </button>
+          </div>
+
+          <!-- TAB 4: SETTINGS PREVIEW PLACEHOLDER -->
+          <div id="tab-settings" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center space-y-4">
+            <div class="bg-slate-800 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto text-slate-400">
+              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-white">Workspace Settings</h3>
+            <p class="text-slate-400 max-w-md mx-auto text-sm">Configure webhook telemetry integrations, customize Slack alerts, setup conversion postbacks, and update team seat roles.</p>
+            <button onclick="switchTab('dashboard')" class="bg-indigo-600 text-white font-semibold text-sm px-5 py-2.5 rounded-xl">
+              Back to Overview
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Dashboard Internal Footer -->
+        <footer class="p-6 bg-slate-900 border-t border-slate-800 text-center text-slate-500 text-xs">
+          Tarzo Premium Performance Panel • Active Account ID: <code class="text-indigo-400 font-mono text-[10px] bg-slate-950 px-2 py-0.5 rounded">tarzo_workspace_0zihuddin</code>
+        </footer>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- ============================================== -->
+  <!-- MODAL: ADD NEW CAMPAIGN                         -->
+  <!-- ============================================== -->
+  <div id="add-campaign-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm transition-opacity">
+    <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl animate-float-2">
+      <!-- Modal Header -->
+      <div class="p-6 border-b border-slate-800 flex items-center justify-between">
+        <h3 class="text-lg font-bold text-white">Create New Mock Campaign</h3>
+        <button onclick="closeAddCampaignModal()" class="text-slate-400 hover:text-white rounded-lg p-1.5 hover:bg-slate-800">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Modal Body Form -->
+      <form onsubmit="handleCreateCampaign(event)" class="p-6 space-y-4">
+        <div>
+          <label for="new-campaign-name" class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5">Campaign Name *</label>
+          <input 
+            type="text" 
+            id="new-campaign-name" 
+            required 
+            placeholder="e.g. Google Search - Retargeting UK"
+            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="new-campaign-channel" class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5">Channel *</label>
+            <select 
+              id="new-campaign-channel" 
+              class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              <option value="Google Ads">Google Ads</option>
+              <option value="Facebook Ads">Facebook Ads</option>
+              <option value="TikTok Ads">TikTok Ads</option>
+              <option value="YouTube Ads">YouTube Ads</option>
+              <option value="Snapchat Ads">Snapchat Ads</option>
+            </select>
+          </div>
+          <div>
+            <label for="new-campaign-status" class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5">Designated Status *</label>
+            <select 
+              id="new-campaign-status" 
+              class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              <option value="winning">Winning Campaign (Positive Profit)</option>
+              <option value="losing">Losing Campaign (Negative Profit)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="new-campaign-cost" class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5">Cost Spend ($) *</label>
+            <input 
+              type="number" 
+              id="new-campaign-cost" 
+              required 
+              min="1"
+              step="any"
+              placeholder="e.g. 5200"
+              class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+          </div>
+          <div>
+            <label id="profit-label" for="new-campaign-profit" class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-1.5">Net Profit/Loss ($) *</label>
+            <input 
+              type="number" 
+              id="new-campaign-profit" 
+              required 
+              step="any"
+              placeholder="e.g. 12400 (Input negative for loss)"
+              class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+          </div>
+        </div>
+
+        <!-- Form Action Buttons -->
+        <div class="pt-4 border-t border-slate-800 flex items-center justify-end gap-3">
+          <button 
+            type="button" 
+            onclick="closeAddCampaignModal()" 
+            class="px-5 py-2.5 rounded-xl text-sm font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+          >
+            Cancel
+          </button>
+          <button 
+            type="submit" 
+            class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm px-6 py-2.5 rounded-xl transition-all shadow-lg"
+          >
+            Add Campaign
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- JAVASCRIPT LOGIC STATE & ROUTING               -->
+  <!-- ============================================== -->
+  <script>
+    // State management
+    const state = {
+      isLoggedIn: false,
+      activeTab: 'dashboard',
+      currentFilter: 'all',
+      searchQuery: '',
+      campaigns: [
+        { id: '1', name: 'Google Search - Black Friday US', channel: 'Google Ads', status: 'winning', cost: 12500, profit: 28400, active: true },
+        { id: '2', name: 'Facebook Ads - Fashion Retro UK', channel: 'Facebook Ads', status: 'winning', cost: 8200, profit: 19500, active: true },
+        { id: '3', name: 'TikTok Spark - GenZ Sneakers Promo', channel: 'TikTok Ads', status: 'losing', cost: 4500, profit: -1200, active: true },
+        { id: '4', name: 'YouTube Video - Smart Home Tech', channel: 'YouTube Ads', status: 'winning', cost: 15000, profit: 31000, active: true },
+        { id: '5', name: 'Google Display - Remarketing Global', channel: 'Google Ads', status: 'losing', cost: 5000, profit: -150, active: true }
+      ]
+    };
+
+    // Store the default fallback array for reset triggers
+    const defaultMockData = JSON.parse(JSON.stringify(state.campaigns));
+
+    // Handle Toast notification creator
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      const isSuccess = type === 'success';
+      const isError = type === 'error';
+      
+      const bgColor = isSuccess ? 'bg-emerald-950 border-emerald-500/30' : 'bg-slate-900 border-indigo-500/30';
+      const textColor = isSuccess ? 'text-emerald-400' : 'text-indigo-400';
+      const iconSvg = isSuccess 
+        ? `<svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`
+        : `<svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
+
+      toast.className = `flex items-center gap-3 p-4 rounded-xl border ${bgColor} ${textColor} shadow-2xl transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto`;
+      toast.innerHTML = `
+        ${iconSvg}
+        <span class="text-sm font-semibold">${message}</span>
+      `;
+      
+      container.appendChild(toast);
+      
+      // Animate entry
+      setTimeout(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      }, 50);
+
+      // Self destroy after 4s
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'scale-95');
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    // Auto Fill credentials on click helper
+    function fillTestCredentials() {
+      document.getElementById('email').value = 'hello.ozihuddin@gmail.com';
+      document.getElementById('password').value = 'ozihuddin123';
+      showToast('Credentials filled in.');
+    }
+
+    // Password Visibility toggle switcher
+    let isPasswordVisible = false;
+    function togglePasswordVisibility() {
+      const passwordInput = document.getElementById('password');
+      const iconContainer = document.getElementById('password-toggle-icon');
+      
+      isPasswordVisible = !isPasswordVisible;
+      
+      if (isPasswordVisible) {
+        passwordInput.type = 'text';
+        iconContainer.innerHTML = `
+          <!-- Eye closed / slash icon -->
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
+        `;
+      } else {
+        passwordInput.type = 'password';
+        iconContainer.innerHTML = `
+          <!-- Eye open icon -->
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        `;
+      }
+    }
+
+    // Handle Login authentication
+    function handleLoginSubmit(event) {
+      event.preventDefault();
+      
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const errorAlert = document.getElementById('login-error-alert');
+      const loginBtn = document.getElementById('login-btn');
+      const loginBtnText = document.getElementById('login-btn-text');
+      const spinner = document.getElementById('login-spinner');
+
+      // Reset error state
+      errorAlert.classList.add('hidden');
+      
+      // Toggle button loading indicator animation
+      loginBtn.disabled = true;
+      loginBtnText.textContent = "Authenticating...";
+      spinner.classList.remove('hidden');
+
+      setTimeout(() => {
+        if (email === 'hello.ozihuddin@gmail.com' && password === 'ozihuddin123') {
+          // Success pathway
+          state.isLoggedIn = true;
+          showToast('Login authorized. Welcoming Ozihuddin...');
+          
+          // Switch display layouts
+          document.getElementById('login-view').classList.add('hidden');
+          document.getElementById('dashboard-view').classList.remove('hidden');
+          
+          // Render initial campaigns
+          recalculateAndRenderDashboard();
+        } else {
+          // Error pathway
+          errorAlert.classList.remove('hidden');
+          showToast('Authorization failed.', 'error');
+          
+          // Reset button loading indicator states
+          loginBtn.disabled = false;
+          loginBtnText.textContent = "Login";
+          spinner.classList.add('hidden');
+        }
+      }, 1200); // 1.2 second mock database check lag
+    }
+
+    // Handle User Log out routing back
+    function handleLogout() {
+      state.isLoggedIn = false;
+      
+      // Clear password field for safety
+      document.getElementById('password').value = '';
+      
+      // Toggle button states back on login form
+      const loginBtn = document.getElementById('login-btn');
+      const loginBtnText = document.getElementById('login-btn-text');
+      const spinner = document.getElementById('login-spinner');
+      loginBtn.disabled = false;
+      loginBtnText.textContent = "Login";
+      spinner.classList.add('hidden');
+
+      document.getElementById('dashboard-view').classList.add('hidden');
+      document.getElementById('login-view').classList.remove('hidden');
+      showToast('Logged out successfully.');
+    }
+
+    // Modal view handlers
+    function openAddCampaignModal() {
+      document.getElementById('add-campaign-modal').classList.remove('hidden');
+    }
+    
+    function closeAddCampaignModal() {
+      document.getElementById('add-campaign-modal').classList.add('hidden');
+      document.getElementById('new-campaign-name').value = '';
+      document.getElementById('new-campaign-cost').value = '';
+      document.getElementById('new-campaign-profit').value = '';
+    }
+
+    // Modal action: handle custom campaign submission
+    function handleCreateCampaign(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('new-campaign-name').value.trim();
+      const channel = document.getElementById('new-campaign-channel').value;
+      const status = document.getElementById('new-campaign-status').value;
+      const cost = parseFloat(document.getElementById('new-campaign-cost').value);
+      const profit = parseFloat(document.getElementById('new-campaign-profit').value);
+
+      if (!name || isNaN(cost) || isNaN(profit)) {
+        showToast('Please enter valid details', 'error');
+        return;
+      }
+
+      // Add to state list
+      const newCampaign = {
+        id: (state.campaigns.length + 1).toString(),
+        name,
+        channel,
+        status,
+        cost,
+        profit,
+        active: true
+      };
+
+      state.campaigns.push(newCampaign);
+      showToast(`Campaign "${name}" added!`);
+      closeAddCampaignModal();
+      
+      recalculateAndRenderDashboard();
+    }
+
+    // Quick change helper inside modal for status choice to make logic intuitive
+    document.getElementById('new-campaign-status').addEventListener('change', (e) => {
+      const profitInput = document.getElementById('new-campaign-profit');
+      const label = document.getElementById('profit-label');
+      if (e.target.value === 'losing') {
+        label.innerHTML = 'Net Loss Amount ($) * <span class="text-xs text-rose-400 font-semibold">(Automatically forced negative)</span>';
+        if (parseFloat(profitInput.value) > 0) {
+          profitInput.value = -Math.abs(parseFloat(profitInput.value));
+        }
+      } else {
+        label.innerHTML = 'Net Profit Amount ($) *';
+        if (parseFloat(profitInput.value) < 0) {
+          profitInput.value = Math.abs(parseFloat(profitInput.value));
+        }
+      }
+    });
+
+    // Toggle active state of campaigns
+    function toggleCampaignActive(id) {
+      const campaign = state.campaigns.find(c => c.id === id);
+      if (campaign) {
+        campaign.active = !campaign.active;
+        showToast(`Campaign status toggled: ${campaign.name}`);
+        recalculateAndRenderDashboard();
+      }
+    }
+
+    // Reset default mock state
+    function resetDefaultMockData() {
+      state.campaigns = JSON.parse(JSON.stringify(defaultMockData));
+      showToast('Restored default campaign lists.');
+      recalculateAndRenderDashboard();
+    }
+
+    // Tab Navigation switching routing engine
+    function switchTab(tabId) {
+      state.activeTab = tabId;
+      
+      // Update sidebar nav highlights
+      const links = document.querySelectorAll('.tab-link');
+      links.forEach(link => {
+        link.classList.remove('text-indigo-400', 'bg-indigo-500/10', 'border-l-2', 'border-indigo-500');
+        link.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-slate-800/60');
+      });
+
+      // Find active tab btn and activate
+      event?.currentTarget?.classList?.add('text-indigo-400', 'bg-indigo-500/10', 'border-l-2', 'border-indigo-500');
+      event?.currentTarget?.classList?.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800/60');
+
+      // Hide all panels
+      document.getElementById('tab-dashboard').classList.add('hidden');
+      document.getElementById('tab-campaigns').classList.add('hidden');
+      document.getElementById('tab-optimizer').classList.add('hidden');
+      document.getElementById('tab-settings').classList.add('hidden');
+
+      // Show targeted panel
+      document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+      
+      // Customize header title according to tab context
+      const headerTitle = document.getElementById('dashboard-title-text');
+      if (tabId === 'dashboard') headerTitle.textContent = "Platform Overview";
+      if (tabId === 'campaigns') headerTitle.textContent = "Campaign Analytics Hub";
+      if (tabId === 'optimizer') headerTitle.textContent = "Optimization Matrix rules";
+      if (tabId === 'settings') headerTitle.textContent = "Workspace Config Panel";
+    }
+
+    // Switch campaign filters inside workspace
+    function setCampaignFilter(filterType) {
+      state.currentFilter = filterType;
+      
+      // Update quick toggle UI indicators
+      const filterTabs = document.querySelectorAll('.campaign-filter-tab');
+      filterTabs.forEach(tab => {
+        tab.classList.remove('bg-indigo-600', 'text-white');
+        tab.classList.add('text-slate-400', 'hover:text-white');
+      });
+
+      // Highlight active filters
+      const targetBtn = document.getElementById(`filter-${filterType}`);
+      if (targetBtn) {
+        targetBtn.classList.remove('text-slate-400', 'hover:text-white');
+        targetBtn.classList.add('bg-indigo-600', 'text-white');
+      }
+
+      // Sync side menu indicators
+      const sidebarBtns = ['all', 'winning', 'losing'];
+      sidebarBtns.forEach(type => {
+        const btn = document.getElementById(`filter-btn-${type}`);
+        if (type === filterType) {
+          btn.className = `flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-white`;
+        } else {
+          let textStyle = 'text-slate-400 hover:bg-slate-800/40 hover:text-white';
+          if (type === 'winning') textStyle = 'text-emerald-400 hover:bg-slate-800/40';
+          if (type === 'losing') textStyle = 'text-rose-400 hover:bg-slate-800/40';
+          btn.className = `flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold ${textStyle}`;
+        }
+      });
+
+      recalculateAndRenderDashboard();
+    }
+
+    // Handles live searching inside Campaign arrays
+    function handleSearch(val) {
+      state.searchQuery = val.trim().toLowerCase();
+      recalculateAndRenderDashboard();
+    }
+
+    // Simple mobile menu toggle
+    let isMobileMenuOpen = false;
+    function toggleMobileMenu() {
+      const nav = document.getElementById('sidebar-nav');
+      isMobileMenuOpen = !isMobileMenuOpen;
+      if (isMobileMenuOpen) {
+        nav.classList.remove('hidden');
+        nav.classList.add('flex');
+      } else {
+        nav.classList.add('hidden');
+        nav.classList.remove('flex');
+      }
+    }
+
+    // Notice alert when clicked features currently empty
+    function showFeatureNotice(featureName) {
+      showToast(`Feature "${featureName}" was triggered for testing.`, 'info');
+    }
+
+    // Core Dashboard calculations and template rendering loops
+    function recalculateAndRenderDashboard() {
+      // 1. Calculate general metric aggregations (Only including ACTIVE campaigns)
+      let totalCost = 0;
+      let totalProfit = 0;
+      let totalWinningCount = 0;
+      let totalLosingCount = 0;
+
+      const activeCampaigns = state.campaigns.filter(c => c.active);
+      
+      activeCampaigns.forEach(c => {
+        totalCost += c.cost;
+        totalProfit += c.profit;
+        if (c.status === 'winning') totalWinningCount++;
+        if (c.status === 'losing') totalLosingCount++;
+      });
+
+      // Calculate Net ROI formula: (Net Profit / Cost) * 100
+      const calculatedROI = totalCost > 0 ? ((totalProfit / totalCost) * 100).toFixed(1) : "0.0";
+
+      // Display overall aggregated stats inside card targets
+      document.getElementById('metric-cost').textContent = `$${totalCost.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+      
+      const profitTarget = document.getElementById('metric-profit');
+      profitTarget.textContent = `$${totalProfit.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+      if (totalProfit < 0) {
+        profitTarget.className = "text-3xl font-extrabold text-rose-400";
+      } else {
+        profitTarget.className = "text-3xl font-extrabold text-emerald-400";
+      }
+      
+      document.getElementById('metric-roi').textContent = `${calculatedROI}%`;
+
+      // Update sidebar list badge tallies (reflecting entire array)
+      const allTally = state.campaigns.length;
+      const winningTally = state.campaigns.filter(c => c.status === 'winning').length;
+      const losingTally = state.campaigns.filter(c => c.status === 'losing').length;
+
+      document.getElementById('badge-count-all').textContent = allTally;
+      document.getElementById('badge-count-winning').textContent = winningTally;
+      document.getElementById('badge-count-losing').textContent = losingTally;
+
+      // Update panel specific totals
+      document.getElementById('winning-badge-total').textContent = `${winningTally} Active`;
+      document.getElementById('losing-badge-total').textContent = `${losingTally} Active`;
+
+      // 2. Filter campaigns based on current user active constraints (search + state.currentFilter)
+      const filteredList = state.campaigns.filter(c => {
+        const matchesSearch = c.name.toLowerCase().includes(state.searchQuery) || c.channel.toLowerCase().includes(state.searchQuery);
+        const matchesFilter = state.currentFilter === 'all' || c.status === state.currentFilter;
+        return matchesSearch && matchesFilter;
+      });
+
+      // 3. Render Panel lists for Winners vs Losers
+      const winningListContainer = document.getElementById('winning-list');
+      const losingListContainer = document.getElementById('losing-list');
+      
+      winningListContainer.innerHTML = '';
+      losingListContainer.innerHTML = '';
+
+      let hasWinnersInFilter = false;
+      let hasLosersInFilter = false;
+
+      filteredList.forEach(c => {
+        const roi = ((c.profit / c.cost) * 100).toFixed(0);
+        
+        // Custom campaign cards inside panels
+        const cardHTML = `
+          <div class="p-4 rounded-xl ${c.active ? 'bg-slate-950/60 border-slate-800' : 'bg-slate-950/20 border-slate-900/40 opacity-50'} border transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-indigo-400 px-2.5 py-0.5 rounded-md bg-indigo-500/10">${c.channel}</span>
+                <span class="text-xs text-slate-500 font-medium">ROI: ${roi}%</span>
+              </div>
+              <h4 class="font-bold text-white text-sm mt-1.5">${c.name}</h4>
+              <div class="flex items-center gap-4 text-xs text-slate-400 mt-1">
+                <span>Cost: <strong class="text-slate-300">$${c.cost.toLocaleString()}</strong></span>
+                <span>Profit: <strong class="${c.status === 'winning' ? 'text-emerald-400' : 'text-rose-400'}">$${c.profit.toLocaleString()}</strong></span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 self-end sm:self-auto">
+              <button 
+                onclick="toggleCampaignActive('${c.id}')"
+                class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${c.active ? 'bg-indigo-600/15 text-indigo-400 border border-indigo-500/30 hover:bg-indigo-500/30' : 'bg-slate-800 text-slate-500 hover:text-slate-300'}"
+              >
+                ${c.active ? 'Pause' : 'Activate'}
+              </button>
+            </div>
+          </div>
+        `;
+
+        if (c.status === 'winning') {
+          winningListContainer.insertAdjacentHTML('beforeend', cardHTML);
+          hasWinnersInFilter = true;
+        } else {
+          losingListContainer.insertAdjacentHTML('beforeend', cardHTML);
+          hasLosersInFilter = true;
+        }
+      });
+
+      // Handle empty states for panels inside columns
+      if (!hasWinnersInFilter) {
+        winningListContainer.innerHTML = `
+          <div class="text-center py-10 text-slate-500 text-xs flex flex-col items-center justify-center gap-2">
+            <svg class="w-8 h-8 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            No active winners match the filters.
+          </div>
+        `;
+      }
+      if (!hasLosersInFilter) {
+        losingListContainer.innerHTML = `
+          <div class="text-center py-10 text-emerald-500/80 text-xs flex flex-col items-center justify-center gap-2">
+            <svg class="w-8 h-8 text-emerald-500/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            All quiet. No losing campaigns on current filters. Excellent!
+          </div>
+        `;
+      }
+
+      // 4. Render main comparative matrix table rows
+      const tableBody = document.getElementById('campaign-table-body');
+      const tableEmpty = document.getElementById('table-empty-state');
+      tableBody.innerHTML = '';
+
+      if (filteredList.length === 0) {
+        tableEmpty.classList.remove('hidden');
+      } else {
+        tableEmpty.classList.add('hidden');
+        filteredList.forEach(c => {
+          const roi = ((c.profit / c.cost) * 100).toFixed(1);
+          const statusClass = c.status === 'winning' 
+            ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' 
+            : 'bg-rose-500/10 text-rose-400 border border-rose-500/20';
+
+          const rowHTML = `
+            <tr class="hover:bg-slate-800/20 transition-all ${!c.active ? 'opacity-40' : ''}">
+              <td class="py-4 px-4 font-bold text-white">${c.name}</td>
+              <td class="py-4 px-4 text-slate-300 font-semibold">${c.channel}</td>
+              <td class="py-4 px-4">
+                <span class="inline-flex px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${statusClass}">
+                  ${c.status}
+                </span>
+                ${!c.active ? '<span class="ml-1.5 inline-flex px-1.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-slate-800 text-slate-500">Paused</span>' : ''}
+              </td>
+              <td class="py-4 px-4 text-right font-mono text-slate-300 font-medium">$${c.cost.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+              <td class="py-4 px-4 text-right font-mono font-bold ${c.profit < 0 ? 'text-rose-400' : 'text-emerald-400'}">$${c.profit.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+              <td class="py-4 px-4 text-right font-mono font-bold text-indigo-400">${roi}%</td>
+              <td class="py-4 px-4 text-center">
+                <div class="flex items-center justify-center gap-2">
+                  <button 
+                    onclick="toggleCampaignActive('${c.id}')" 
+                    title="${c.active ? 'Pause Campaign' : 'Resume Campaign'}"
+                    class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+                  >
+                    ${c.active 
+                      ? `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`
+                      : `<svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`
+                    }
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+          tableBody.insertAdjacentHTML('beforeend', rowHTML);
+        });
+      }
+    }
+
+    // Auto fill credentials trigger for fast review
+    window.onload = function() {
+      // Platform loads ready to receive user credentials
+    }
+  </script>
+</body>
+</html>
